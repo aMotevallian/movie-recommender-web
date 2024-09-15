@@ -36,3 +36,6 @@ body {
     text-wrap: balance;
   }
 }
+.min-h-screen{
+  min-height: calc(100vh - 5rem);
+}
