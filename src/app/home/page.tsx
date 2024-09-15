@@ -24,7 +24,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <h1 className="text-center text-white text-3xl py-6">Trending Movies</h1>
+      <h1 className=" text-black text-2xl py-6 m-1">Trending Movies</h1>
+      <MovieCarousel movies={trendingMovies} />
+      <h1 className=" text-black text-2xl py-6 m-1">Trending Movies</h1>
+      <MovieCarousel movies={trendingMovies} />
+      <h1 className=" text-black text-2xl py-6 m-1">Trending Movies</h1>
+      <MovieCarousel movies={trendingMovies} />
+      <h1 className=" text-black text-2xl py-6 m-1">Trending Movies</h1>
       <MovieCarousel movies={trendingMovies} />
     </div>
   );
