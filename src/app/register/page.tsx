@@ -12,7 +12,7 @@ const AuthTabs: React.FC = () => {
         <div className="flex justify-center mb-6">
           <button
             className={`px-4 py-2 font-semibold rounded-l-lg ${
-              activeTab === 'login' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              activeTab === 'login' ? 'bg-gray-800 text-white' : 'bg-gray-200'
             }`}
             onClick={() => setActiveTab('login')}
           >
@@ -20,7 +20,7 @@ const AuthTabs: React.FC = () => {
           </button>
           <button
             className={`px-4 py-2 font-semibold rounded-r-lg ${
-              activeTab === 'signup' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              activeTab === 'signup' ? 'bg-gray-800 text-white' : 'bg-gray-200'
             }`}
             onClick={() => setActiveTab('signup')}
           >
