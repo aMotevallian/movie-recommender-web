@@ -32,8 +32,16 @@ const MovieItem: React.FC<{ movie: Movie }> = ({ movie }) => {
             </div>
           </div>
         )}
-        <p className="text-center w-40">{movie.title || movie.name}</p>
-      </div>
+<p
+          className={`text-center ${hovered ? 'w-96' : 'w-40'} transition-all duration-300`}
+          style={{ 
+            whiteSpace: 'nowrap', 
+            overflow: 'hidden', 
+            textOverflow: 'ellipsis' 
+          }}
+        >
+          {movie.title || movie.name}
+        </p>      </div>
     </Link>
   );
 };
