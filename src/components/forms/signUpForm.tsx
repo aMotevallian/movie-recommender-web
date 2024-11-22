@@ -1,20 +1,47 @@
 import React, { useState } from "react";
+import { signup } from "./../../api/userApi";
+import { useRouter } from "next/navigation";  // For navigation after login
+interface RegisterFormProps {
+  setActiveTab: (tab: 'login' | 'signup') => void;
+  setSnackbarMessage: (message: string | null) => void;
+  setSnackbarSeverity: (severity: 'success' | 'error') => void;
+  setOpenSnackbar: (open: boolean) => void;
+}
 
-const RegisterForm: React.FC = () => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ setActiveTab ,setSnackbarMessage,
+  setSnackbarSeverity,
+  setOpenSnackbar, }) => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  const handleSignup = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Signing up with", {
-      username,
-      email,
-      password,
-      confirmPassword,
-    });
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setSnackbarMessage('Passwords do not match');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+      return;
+    }
+    try {
+      const res = await signup(username, email, password);
+      await res.json();
+
+      setSnackbarMessage('Signup successful! Please log in.');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      setActiveTab('login');
+    } catch (err) {
+      setSnackbarMessage('Signup failed. Please try again.');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+    }
   };
 
   return (

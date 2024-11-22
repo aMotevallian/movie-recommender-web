@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+import { login } from "./../../api/userApi";
+import { useRouter } from "next/navigation";  // For navigation after login
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const router = useRouter();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const res = await login(username , password)
 
-    console.log("Logging in with", { username, password });
+      router.push('/');  // Redirect to the dashboard or any other protected route
+      console.log(res)
+    } catch (err) {
+      setError("Login failed: Invalid credentials");
+    }
   };
 
   return (
