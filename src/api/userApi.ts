@@ -33,9 +33,10 @@ export const login = async (username: any, password: any) => {
 };
 export const validateToken = async () => {
   try {
-    const response = await axios.get(`${API_URL}/auth/validate-token/`, {
+    const response = await axios.get(`${API_URL}/auth/validateToken/`, {
       withCredentials: true, // Ensure cookies are sent with the request
     });
+    console.log("sv")
     return response.data; // Return user data if token is valid
   } catch (error) {
     console.error('Error validating token:', error);

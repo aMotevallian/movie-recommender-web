@@ -65,9 +65,9 @@ export default function MoviePicker() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       {currentMovie && (
-        <div className="w-full max-w-md p-6 bg-gray-800 rounded-md shadow-md">
+        <div className="w-full max-w-md p-6 border-white border-[1px] bg-gray-800 rounded-md shadow-md">
           <div className="relative flex justify-center">
             <img
               src={`https://image.tmdb.org/t/p/w500/${currentMovie.poster_path}`}

@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 import { login } from "./../../api/userApi";
 import { useRouter } from "next/navigation";  // For navigation after login
+import { useSnackbar } from "../../components/snackbarContext";
+import  {useAuth}  from "../../components/useAth"; // Import your useAuth hook
 
-const LoginForm: React.FC = () => {
+const LoginForm: React.FC = ({}) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  let { setUser , user} = useAuth(); // Add setUser from context
 
   const router = useRouter();
+  const { showSnackbar } = useSnackbar();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await login(username , password)
+      const res = await login(username, password);
+      
+      showSnackbar("Login successful!", "success");
+      
+      router.push("/");
+      setUser(localStorage.token); // Update user context with the logged-in user
+      console.log(user)
 
-      router.push('/');  // Redirect to the dashboard or any other protected route
-      console.log(res)
     } catch (err) {
-      setError("Login failed: Invalid credentials");
+      showSnackbar("Login failed. Invalid username or password", "error");
     }
   };
 

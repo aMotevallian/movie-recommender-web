@@ -2,10 +2,20 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaBars, FaTimes, FaSearch } from "react-icons/fa";
-
+import { useAuth } from "../components/useAth"; // Import the custom hook
+import { logout } from "../api/userApi"; // Import the logout function
+import {
+  useSearchParams,
+  useRouter,
+  usePathname,
+} from "next/navigation";
 const Navbar = () => {
   const [nav, setNav] = useState(false);
-
+  const { user, loading } = useAuth(); // Get user and loading state from the custom hook
+  const [search, setSearch] = useState<string>(""); // State for search input
+  const searchParam = useSearchParams();
+  const pathname = usePathname();
+  const {replace} = useRouter()
   const links = [
     {
       id: 1,
@@ -24,8 +34,30 @@ const Navbar = () => {
     },
   ];
 
+  // Handle logout
+  const handleLogout = async () => {
+    await logout(); // Call your logout function
+    window.location.reload(); // Reload the page or redirect to login page
+  };
+  const handleSearch = (searchItem:string) => {
+    setSearch(searchItem)
+
+    const params = new URLSearchParams(searchParam)
+    if(searchItem){
+      params.set("query" , searchItem)
+    }else{
+      params.delete("query")
+    }
+    replace(`${pathname}?${params.toString()}`)
+  };
+
+  // Handle enter key press for search
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && search.trim()) {
+    }
+  };
   return (
-    <div className="flex justify-between items-center w-full h-20 px-4 text-gray-300 sticky top-0 bg-gray-800 nav z-50">
+    <div className="flex justify-between items-center w-full h-20 px-4 text-gray-300 sticky top-0 bg-black nav z-50">
       <div className="flex items-center">
         <h1 className="text-4xl font-signature ml-2">
           <a
@@ -55,15 +87,31 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="bg-gray-700 text-gray-300 pl-10 pr-4 py-2 w-72 rounded-md focus:outline-none"
+            onChange={(e) => handleSearch(e.target.value)} // Update search state
+            onKeyDown={handleKeyPress} // Trigger search on Enter key press
+            className="bg-black border-white text-gray-300 pl-10 pr-4 py-2 w-72 rounded-md focus:outline-none"
           />
           <FaSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
 
-        {/* Login Button */}
-        <Link href={'/register'} className=" bg-gray-800 hover:text-white hover:scale-105 text-gray-400 px-4 py-2 cursor-pointer capitalize font-medium duration-200 link-underline">
-          Login
-        </Link>
+        {/* Conditional Login/Logout Button */}
+        {loading ? (
+          <div>Loading...</div>
+        ) : user ? (
+          <button
+            onClick={handleLogout}
+            className="bg-black hover:text-white hover:scale-105 text-gray-400 px-4 py-2 cursor-pointer capitalize font-medium duration-200 link-underline"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            href={"/register"}
+            className="bg-black hover:text-white hover:scale-105 text-gray-400 px-4 py-2 cursor-pointer capitalize font-medium duration-200 link-underline"
+          >
+            Login
+          </Link>
+        )}
       </div>
 
       {/* Mobile Menu Icon */}
