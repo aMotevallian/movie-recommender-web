@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { signup } from "./../../api/userApi";
 import { useRouter } from "next/navigation"; // For navigation after login
 import { useSnackbar } from "../../components/snackbarContext";
-import { TextField } from "@mui/material";
 import CustomTextField from "../customTextField";
 
 interface RegisterFormProps {
@@ -42,37 +41,37 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setActiveTab }) => {
       onSubmit={handleSignup}
       className="justify-between flex flex-col h-full"
     >
-     <CustomTextField
-  id="username"
-  label="Username"
-  value={username}
-  onChange={(e) => setUsername(e.target.value)}
-  required
-/>
-<CustomTextField
-  id="email"
-  label="Email"
-  type="email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  required
-/>
-<CustomTextField
-  id="password"
-  label="Password"
-  type="password"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  required
-/>
-<CustomTextField
-  id="confirm-password"
-  label="Confirm Password"
-  type="password"
-  value={confirmPassword}
-  onChange={(e) => setConfirmPassword(e.target.value)}
-  required
-/>
+      <CustomTextField
+        id="username"
+        label="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
+      <CustomTextField
+        id="email"
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <CustomTextField
+        id="password"
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <CustomTextField
+        id="confirm-password"
+        label="Confirm Password"
+        type="password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+      />
 
       <button
         type="submit"
