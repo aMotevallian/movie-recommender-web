@@ -1,28 +1,27 @@
 import React, { useState } from "react";
-import { login } from "./../../api/userApi";
 import { useRouter } from "next/navigation"; // For navigation after login
 import { useSnackbar } from "../../components/snackbarContext";
-import { useAuth } from "../../components/useAth"; // Import your useAuth hook
 import CustomTextField from "../customTextField";
-
+import { useAuth } from "../../components/authContext";
+import { login as loginApi } from "../../api/userApi";
 const LoginForm: React.FC = ({}) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  let { setUser, user } = useAuth(); // Add setUser from context
+  const { login } = useAuth();  // Use the login function from context
 
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await login(username, password);
-
+      const data = await loginApi(username, password);
+      login(data.token, username);
       showSnackbar("Login successful!", "success");
+      console.log(`Bearer ${localStorage.getItem("token")}`);
 
       router.push("/");
-      setUser(localStorage.token); // Update user context with the logged-in user
-      console.log(user);
+
     } catch (err) {
       showSnackbar("Login failed. Invalid username or password", "error");
     }

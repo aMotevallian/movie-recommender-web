@@ -2,7 +2,9 @@
 import { useEffect, useState } from "react";
 import { Movie } from "../../../types";
 import MovieCarousel from "../../../components/movieCarousel"; 
-import { getMovieById, getRecommendationsById } from "./../../../api/movies";
+import { getMovieById } from "./../../../api/movies";
+import { getMovieRecommendations } from "./../../../api/recommendations";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 export default function MovieDetails({ params }: { params: { id: number } }) {
@@ -20,7 +22,7 @@ export default function MovieDetails({ params }: { params: { id: number } }) {
         setMovie(response);
         setLoading(false);
         
-        const similarResponse = await getRecommendationsById(id);
+        const similarResponse = await getMovieRecommendations(id);
         setSimilarMovies(similarResponse);
         setLoadingRecommendations(false);
       } catch (error) {
