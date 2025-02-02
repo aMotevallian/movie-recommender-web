@@ -68,7 +68,7 @@ export default function MovieDetails({ params }: { params: { id: number } }) {
           {movie.vote_average != 0 && (
             <div className="flex items-center mt-4">
               <span className="text-yellow-400 text-2xl font-bold mr-2">
-                {movie.vote_average.toFixed(1)}
+                {((movie.vote_average)/2).toFixed(1)}
               </span>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (

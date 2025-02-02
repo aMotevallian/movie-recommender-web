@@ -1,33 +1,28 @@
 "use client";
-import Link from "next/link";
+
 import React, { useState } from "react";
+import Link from "next/link";
 import { FaBars } from "react-icons/fa";
+import Searchbar from "../components/Searchbar"; // مسیر فایل Searchbar را درست وارد کنید
 import { useAuth } from "../components/authContext";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   AppBar,
   Toolbar,
-  IconButton,
+  Box,
   Button,
   Menu,
   MenuItem,
-  TextField,
   Drawer,
   List,
   ListItem,
   ListItemText,
-  Box,
+  IconButton
 } from "@mui/material";
 
 const Navbar = () => {
+  const { user, logout } = useAuth(); // Auth context
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // Anchor for dropdown menu
-  const { user, logout } = useAuth(); // Auth context
-  const [search, setSearch] = useState<string>(""); // Search input state
-
-  const searchParam = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
 
   const links = [
     { id: 1, name: "Browse All", link: "/home" },
@@ -35,19 +30,9 @@ const Navbar = () => {
     { id: 3, name: "Find Your Match", link: "/match" },
   ];
 
-  // Handle logout
   const handleLogout = async () => {
-    logout(); // Call your logout function
-    window.location.reload(); // Reload or redirect to login page
-  };
-
-  // Search handler
-  const handleSearch = (searchItem: string) => {
-    setSearch(searchItem);
-    const params = new URLSearchParams(searchParam);
-    if (searchItem) params.set("query", searchItem);
-    else params.delete("query");
-    replace(`${pathname}?${params.toString()}`);
+    logout();
+    window.location.reload();
   };
 
   // Dropdown menu handlers
@@ -66,46 +51,43 @@ const Navbar = () => {
 
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "black" }}>
-      <Toolbar className="flex justify-between items-center">
-        {/* Left Side: Logo and Navigation Links */}
-        <Box className="flex items-center space-x-4">
-          <h1 className="text-4xl font-bold">
+      <Toolbar className="flex justify-between items-center w-full">
+        {/* Logo */}
+        <Box className="flex items-center">
+          <h1 className="text-3xl font-bold">
             <Link href="/" className="text-white">
               MovieYab
             </Link>
           </h1>
-          <Box className="hidden lg:flex space-x-4">
-            {links.map(({ id, name, link }) => (
-              <Button key={id} component={Link} href={link} sx={{ color: "white", textTransform: "none" }}>
-                {name}
-              </Button>
-            ))}
-          </Box>
         </Box>
 
-        {/* Right Side: Search and Profile */}
-        <Box className="hidden lg:flex space-x-4 items-center justify-end">
-          {/* Search Bar */}
-          <TextField
-            // variant="outlined"
-            size="small"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => handleSearch(e.target.value)}
-            sx={{
-              input: { color: "white", backgroundColor: "black" },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "#aaa",
-                },
-              },
-            }}
-          />
+        {/* Desktop Navigation */}
+        <Box
+          className="hidden lg:flex space-x-6"
+          style={{ width: "inherit", margin: "5px" }}
+        >
+          {links.map(({ id, name, link }) => (
+            <Button
+              key={id}
+              component={Link}
+              href={link}
+              sx={{ color: "white", textTransform: "none" }}
+            >
+              {name}
+            </Button>
+          ))}
+        </Box>
 
-          {/* Profile Button */}
+        {/* Searchbar */}
+        <Box
+          className="hidden lg:flex space-x-4 items-center justify-end"
+          style={{ width: "inherit" }}
+        >
+          <Searchbar /> {/* اضافه کردن کامپوننت Searchbar */}
+        </Box>
+
+        {/* Profile Button */}
+        <Box className="hidden lg:flex">
           {user ? (
             <>
               <Button
@@ -140,22 +122,25 @@ const Navbar = () => {
               </Menu>
             </>
           ) : (
-            <Button component={Link} href="/register" sx={{ color: "white", textTransform: "none" }}>
+            <Button
+              component={Link}
+              href="/register"
+              sx={{ color: "white", textTransform: "none" }}
+            >
               Login
             </Button>
           )}
         </Box>
-
-        {/* Mobile Menu Icon */}
-        <IconButton
-          edge="end"
-          color="inherit"
-          aria-label="menu"
-          onClick={toggleMobileMenu}
-          className="lg:hidden"
-        >
-          <FaBars />
-        </IconButton>
+        <Box className="lg:hidden">
+          <IconButton
+            edge="end"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleMobileMenu}
+          >
+            <FaBars />
+          </IconButton>
+        </Box>
       </Toolbar>
 
       {/* Mobile Menu */}

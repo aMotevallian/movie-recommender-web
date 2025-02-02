@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa";
 import { Movie } from "../../types";
 import {rateMovie ,getRandomUnratedMovies } from "../../api/movies"
-import {getHybridRecommendations} from "../../api/recommendations"
+import {getHybridRecommendations,getUserRecommendations} from "../../api/recommendations"
 
 import withAuth from "../HOC/withAuth";
 import "./../../styles/matchFinder.css"
@@ -25,12 +25,11 @@ function MoviePicker() {
       const response = await getRandomUnratedMovies()
 
       const firstMovie = response[0];
-      // await fetchImage(firstMovie.poster_path);
       setMovies(response);
       setHoverRating(0);
       setSelectedRating(0);
-      const imageUrl = `https://image.tmdb.org/t/p/w500/${firstMovie.poster_path}`;
-      setCurrentMovie({ ...firstMovie, imageUrl }); 
+      // const imageUrl = `https://image.tmdb.org/t/p/w500/${firstMovie.poster_path}`;
+      setCurrentMovie({ ...firstMovie }); 
       
     } catch (error) {
       console.error("Failed to fetch movies:", error);
@@ -102,7 +101,7 @@ function MoviePicker() {
             <div className="relative flex justify-center">
               <img
                 id="movie-image"
-                src={currentMovie.imageUrl}
+                src={`https://image.tmdb.org/t/p/w300/${currentMovie.poster_path}`}
                 alt={currentMovie.title}
                 className="rounded-box bg-cover"
               />

@@ -132,3 +132,30 @@ export const rateMovie = async (movieId: number, rating: number) => {
         throw error;
     }
 };
+export const getWatchlist = async (page: number = 1) => {
+  try {
+      const response = await axios.get(`${BASE_URL}watch-later/`, {
+          headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+      });
+      return response.data; // Contains `results`, `count`, and pagination info
+  } catch (error) {
+      console.error("Failed to fetch watchlist:", error);
+      throw error;
+  }
+};
+
+export const getRatedMovies = async (page: number = 1) => {
+  try {
+      const response = await axios.get(`${BASE_URL}rated-movies/`, {
+          headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+      });
+      return response.data; // Contains `results`, `count`, and pagination info
+  } catch (error) {
+      console.error("Failed to fetch rated movies:", error);
+      throw error;
+  }
+};

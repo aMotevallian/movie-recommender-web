@@ -20,6 +20,7 @@ img {
 
 body {
   color: rgb(var(--foreground-rgb));
+  height: 100%;
   background: linear-gradient(
       to bottom,
       transparent,
@@ -34,5 +35,5 @@ body {
   }
 }
 .min-h-screen {
-  min-height: calc(100vh - 5rem);
+  min-height: calc(100vh - 4rem);
 }

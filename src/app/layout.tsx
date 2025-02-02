@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import "./globals.css";
+import "../styles/globals.css";
 import Navbar from "../components/navBar";
 import { SnackbarProvider } from "../components/snackbarContext";
 import { AuthProvider } from "../components/authContext";

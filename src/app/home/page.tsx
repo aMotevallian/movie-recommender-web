@@ -97,7 +97,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="h-[100vh] items-center flex justify-center content-center">
+          <div className="h-[100%] items-center flex justify-center content-center">
             {loading && <p>Loading...</p>}
             {!loading && searchResults.length === 0 && (
               <p>No results found for "{query}".</p>

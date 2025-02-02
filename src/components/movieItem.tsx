@@ -3,11 +3,14 @@ import Link from "next/link";
 import { Movie } from "../types";
 import { useSearchParams } from "next/navigation";
 import { toggleWatchLater, getWatchLaterStatus } from "../api/movies"; // Adjust the path if needed
+import { FaStar,FaRegStar  } from "react-icons/fa";
+import { useSnackbar } from "../components/snackbarContext";
 
 const MovieItem: React.FC<{ movie: Movie }> = ({ movie }) => {
   const [hovered, setHovered] = useState(false);
   const [saved, setSaved] = useState(false);
   const searchParams = useSearchParams();
+  const { showSnackbar } = useSnackbar();
 
   const query = searchParams.get("query"); // Get the search query from the URL
 
@@ -32,7 +35,7 @@ const MovieItem: React.FC<{ movie: Movie }> = ({ movie }) => {
     try {
       const response = await toggleWatchLater(movie.id); // Call backend API to toggle status
       setSaved((prev) => !prev); // Toggle saved state locally
-      alert(response.message); // Optional: Show feedback message
+      showSnackbar(response.message, "success");
     } catch (error) {
       console.error("Failed to toggle Watch Later status:", error);
     }
@@ -67,9 +70,15 @@ const MovieItem: React.FC<{ movie: Movie }> = ({ movie }) => {
               <button
                 onClick={handleSave}
                 className="absolute top-2 right-2 bg-gray-800 bg-opacity-70 text-white text-sm p-2 rounded-full hover:bg-opacity-90"
-                title={saved ? "Remove from Watch Later" : "Save to Watch Later"}
+                title={
+                  saved ? "Remove from Watch Later" : "Save to Watch Later"
+                }
               >
-                {saved ? "✓" : "★"} {/* Star or checkmark */}
+                {saved ? (
+                  <FaStar className="text-yellow-500" />
+                ) : (
+                  <FaRegStar className="text-gray-400" />
+                )}
               </button>
             </div>
           )}

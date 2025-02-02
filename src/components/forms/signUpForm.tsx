@@ -18,17 +18,41 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setActiveTab }) => {
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
 
+  const isValidUsername = (username: string) => /^[a-zA-Z0-9]{3,}$/.test(username);
+
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const isValidPassword = (password: string) => /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password);
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      showSnackbar("Passwords do not match", "error");
+    if (!isValidUsername(username)) {
+      setError("Username must be at least 3 characters and contain only letters and numbers.");
+      showSnackbar("Invalid username!", "error");
       return;
     }
-    try {
-      const res = await signup(username, email, password);
 
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email address.");
+      showSnackbar("Invalid email format!", "error");
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setError("Password must be at least 8 characters long and contain both letters and numbers.");
+      showSnackbar("Weak password!", "error");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      showSnackbar("Passwords do not match!", "error");
+      return;
+    }
+
+    try {
+      await signup(username, email, password);
       showSnackbar("Signup successful!", "success");
       setActiveTab("login");
     } catch (err) {
@@ -37,10 +61,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setActiveTab }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSignup}
-      className="justify-between flex flex-col h-full"
-    >
+    <form onSubmit={handleSignup} className="flex flex-col h-full justify-between">
       <CustomTextField
         id="username"
         label="Username"
@@ -72,6 +93,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setActiveTab }) => {
         onChange={(e) => setConfirmPassword(e.target.value)}
         required
       />
+
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
       <button
         type="submit"
